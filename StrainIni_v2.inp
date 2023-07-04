@@ -1,0 +1,24 @@
+5 ! nxp; it should be smaller than nx value from AS_LBFG_v2 code
+1  ! met=1 for Pryor; met=2 for Gallet
+12 ! radcut
+0, 1 ! ff, index
+0.032 ! for InAs/GaAs: msfit=0.03 for islands and msfit=0.032 for core-shell; for Si/C: msfit=0.032.
+*******************************
+NOTES
+ From VFF_LBFG_v2 one needs files: fort.111, fort.124, fort.201, and fort.601 or fort.6abc (e.g., fort.6010, fort.6120, ...);
+    fort.6abc collects atoms coordinates of intermediate configurations obtained during the minimization procedure.
+ Formula for calculus eps: Pryor, J. Appl. Phys. 83, 2548 (1998).
+ Formula for calculus eps: Gullet, Modelling Simul. Mater. Sci. Eng. 16 (2008) 015001.
+ nxp is a cutting number (< nx=ny) which sets the xy cross-section radius(=nxp*a1) for various z coords.
+ radcut is close (larger) as value of d12 (Ga-Sb bond length) and d13 (Ga-As bond length), in Angstrom unit. 
+    if radcut is large enough (11 e.g.) eps (strain field) is calculated for all atoms.
+    radcut is used if met=1 (Pryor); its value doesn't affect the calculus for met=2 (Gallet). 
+if ff=0d0 the damping (introduced for z>0) of the diagonal tensor elementsepsxx, epsyy, epszz used to acoomodate the 
+    bulk behavior (value=0) is canceled.
+index is an integer smaller than 5; it is the index for adf(:);
+    index=1,2,3,4,5 starts the damping at z=nzmax*a2*(0.7, 0.75, 0.8, 0.85, 0.9). adf is introduced if desired
+    to accomodate faster (reduce the calculus time) the diagonal strain tensor components
+    epsxx, epsyy, epszz to the bulk value (i.e., 0) in the capping domain.
+In fort.124, QD=1 for hemi-torus;  QD=2 for cone;  QD=21 for truncated cone; QD=3 for pyramid; QD=3 for core-shell
+msfit is parameter used to fit the misfit, distance between atoms which is considered as a misfit.
+    e,g.: PA-NA bound length is a misfit if dpn(q)<dc12*(1-msfit) or dpn(q)>dc12*(1+msfit) - in Misfit_v2.f90.
