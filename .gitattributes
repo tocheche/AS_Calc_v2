@@ -1,0 +1,2 @@
+*.nb linguist-detectable=false
+*.f90 linguist-detectable=true
